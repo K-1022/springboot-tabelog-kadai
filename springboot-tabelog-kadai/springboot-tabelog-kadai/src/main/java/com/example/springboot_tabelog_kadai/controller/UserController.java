@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.springboot_tabelog_kadai.entity.User;
+import com.example.springboot_tabelog_kadai.form.UserEditForm;
 import com.example.springboot_tabelog_kadai.repository.UserRepository;
 import com.example.springboot_tabelog_kadai.security.UserDetailsImpl;
 import com.example.springboot_tabelog_kadai.service.UserService;
-
-import UserEditForm.UserEditForm;
 
 @Controller
 @RequestMapping("/user")

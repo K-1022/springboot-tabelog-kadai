@@ -7,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.springboot_tabelog_kadai.entity.Role;
 import com.example.springboot_tabelog_kadai.entity.User;
 import com.example.springboot_tabelog_kadai.form.SignupForm;
+import com.example.springboot_tabelog_kadai.form.UserEditForm;
 import com.example.springboot_tabelog_kadai.repository.RoleRepository;
 import com.example.springboot_tabelog_kadai.repository.UserRepository;
-
-import UserEditForm.UserEditForm;
 
 
 @Service
@@ -45,7 +44,7 @@ public class UserService {
     }    
     
     @Transactional
-    public void update(UserEditForm userEditForm) {
+    public void update(com.example.springboot_tabelog_kadai.form.UserEditForm userEditForm) {
         User user = userRepository.getReferenceById(userEditForm.getId());
         
         user.setName(userEditForm.getName());
