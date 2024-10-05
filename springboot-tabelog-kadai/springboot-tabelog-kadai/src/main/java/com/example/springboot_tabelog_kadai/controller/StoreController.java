@@ -1,5 +1,7 @@
 package com.example.springboot_tabelog_kadai.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -11,16 +13,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springboot_tabelog_kadai.entity.Favorite;
+import com.example.springboot_tabelog_kadai.entity.Review;
 import com.example.springboot_tabelog_kadai.entity.Store;
+import com.example.springboot_tabelog_kadai.form.ReservationInputForm;
+import com.example.springboot_tabelog_kadai.repository.FavoriteRepository;
+import com.example.springboot_tabelog_kadai.repository.ReviewRepository;
 import com.example.springboot_tabelog_kadai.repository.StoreRepository;
 
 @Controller
 @RequestMapping("/stores")
 public class StoreController {
-	private final StoreRepository storeRepository;        
+	private final StoreRepository storeRepository;  
+	private final ReviewRepository reviewRepository;
+	private final FavoriteRepository favoriteRepository;
     
-    public StoreController(StoreRepository storeRepository) {
-        this.storeRepository = storeRepository;            
+    public StoreController(StoreRepository storeRepository, ReviewRepository reviewrepository, FavoriteRepository favoriteRepository) {
+        this.storeRepository = storeRepository;       
+        this.reviewRepository = reviewrepository;
+        this.favoriteRepository = favoriteRepository;
     }     
   
     @GetMapping
@@ -80,7 +91,15 @@ public class StoreController {
     public String show(@PathVariable(name = "id") Integer id, Model model) {
         Store store = storeRepository.getReferenceById(id);
         
-        model.addAttribute("store", store);         
+        List<Review>reviewPage = reviewRepository.findTop6ByStoreIdOrderByCreatedAtDesc(id); 
+        
+        Favorite favorite = favoriteRepository.findByStoreId(id);
+        
+        model.addAttribute("store", store); 
+        model.addAttribute("reservationInputForm", new ReservationInputForm());
+        model.addAttribute("reviewId", id);
+        model.addAttribute("reviewPage", reviewPage);
+        model.addAttribute("favorite", favorite);
         
         return "stores/show";
     }    

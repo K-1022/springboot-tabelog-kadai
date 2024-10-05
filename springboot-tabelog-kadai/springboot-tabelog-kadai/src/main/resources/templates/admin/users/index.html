@@ -36,7 +36,6 @@
                                  <thead>
                                      <tr>
                                          <th scope="col">ID</th>
-                                         <th scope="col">コース</th>
                                          <th scope="col">氏名</th>
                                          <th scope="col">フリガナ</th>
                                          <th scope="col">メールアドレス</th>                                        
@@ -46,7 +45,6 @@
                                  <tbody>                                                     
                                      <tr th:each="user : ${userPage}">
                                          <td th:text="${user.getId()}"></td>
-                                         <td th:text="${user.getCourse()}"></td>
                                          <td th:text="${user.getName()}"></td>
                                          <td th:text="${user.getFurigana()}"></td>
                                          <td th:text="${user.getEmail()}"></td>

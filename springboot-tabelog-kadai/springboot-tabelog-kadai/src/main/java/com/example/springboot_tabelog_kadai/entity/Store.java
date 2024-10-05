@@ -1,5 +1,6 @@
 package com.example.springboot_tabelog_kadai.entity;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
@@ -42,6 +43,16 @@ public class Store {
 	
 	@Column(name = "phone_number")
 	private String phoneNumber;
+	
+	@Column(name = "holiday")
+	private String holiday;
+	
+	@Column(name = "open_time")
+	private Time openTime;
+	
+	@Column(name = "close_time")
+	private Time closeTime;
+	
 	
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;

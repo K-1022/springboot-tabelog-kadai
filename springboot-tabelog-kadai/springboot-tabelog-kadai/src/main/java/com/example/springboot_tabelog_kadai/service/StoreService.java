@@ -45,6 +45,9 @@ public class StoreService {
         store.setPostalCode(storeRegisterForm.getPostalCode());
         store.setAddress(storeRegisterForm.getAddress());
         store.setPhoneNumber(storeRegisterForm.getPhoneNumber());
+        store.setHoliday(storeRegisterForm.getHoliday());
+        store.setOpenTime(storeRegisterForm.getOpenTime());
+        store.setCloseTime(storeRegisterForm.getCloseTime());
                     
         storeRepository.save(store);
     }  
@@ -70,6 +73,9 @@ public class StoreService {
          store.setPostalCode(storeEditForm.getPostalCode());
          store.setAddress(storeEditForm.getAddress());
          store.setPhoneNumber(storeEditForm.getPhoneNumber());
+         store.setHoliday(storeEditForm.getHoliday());
+         store.setOpenTime(storeEditForm.getOpenTime());
+         store.setCloseTime(storeEditForm.getCloseTime());
                      
          storeRepository.save(store);
 	}

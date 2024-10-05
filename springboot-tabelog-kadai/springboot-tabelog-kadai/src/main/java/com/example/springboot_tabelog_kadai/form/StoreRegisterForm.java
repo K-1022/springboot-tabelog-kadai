@@ -32,6 +32,14 @@ public class StoreRegisterForm {
 	
 	@NotBlank(message = "電話番号を入力してください。")
 	private String phoneNumber;
+		
+	@NotBlank(message = "定休日を入力してください。")
+	private String holiday;
 	
+	@NotNull(message = "開始時間を入力してください。")
+	private java.sql.Time openTime;
+	
+	@NotNull(message = "終了時間を入力してください。")
+	private java.sql.Time closeTime;
 	
 }

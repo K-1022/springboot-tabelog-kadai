@@ -42,7 +42,8 @@
                                                  <option value="" hidden>選択してください</option>   
                                                  <optgroup label="北海道">                                      
                                                      <option value="北海道" th:selected="${area == '北海道'}">北海道</option>
-                                                 </optgroup>                
+                                                 </optgroup>    
+                                                            
                                                  <optgroup label="東北">                                  
                                                      <option value="青森県" th:selected="${area == '青森県'}">青森県</option>                                                
                                                      <option value="岩手県" th:selected="${area == '岩手県'}">岩手県</option>
@@ -159,26 +160,26 @@
                                          <div class="form-group mb-3">    
                                              <select class="form-control form-select" name="genre">
 												 <option value="" hidden>選択してください</option>
-                                                  <option value="和食">和食</option>
-											      <option value="洋食">洋食</option>
-											      <option value="イタリアン">イタリアン</option>
-											      <option value="フレンチ">フレンチ</option>
-											      <option value="ベトナム料理">ベトナム料理</option>
-											      <option value="中華">中華</option>
-											      <option value="焼肉">焼肉</option>
-										       	  <option value="居酒屋">居酒屋</option>
-											      <option value="ピザ">ピザ</option>
-											      <option value="寿司">寿司</option>
-											      <option value="カレー">カレー</option>
-											      <option value="お好み焼き">お好み焼き</option>
-											      <option value="バーガー">バーガー</option>
-											      <option value="パン屋">パン屋</option>
-										    	  <option value="ベーカリー">ベーカリー</option>
-											      <option value="バイキング">バイキング</option>
-											      <option value="バー">バー</option>
-											      <option value="カフェ">カフェ</option>
-											      <option value="デザート">デザート</option>
-											      <option value="テイクアウト">テイクアウト</option>  
+                                                  <option value="和食" th:selected="${genre == '和食'}">和食</option>
+											      <option value="洋食" th:selected="${genre == '洋食'}">洋食</option>
+											      <option value="イタリアン" th:selected="${genre == 'イタリアン'}">イタリアン</option>
+											      <option value="フレンチ" th:selected="${genre == 'フレンチ'}">フレンチ</option>
+											      <option value="ベトナム料理" th:selected="${genre == 'ベトナム料理'}">ベトナム料理</option>
+											      <option value="中華" th:selected="${genre == '中華'}">中華</option>
+											      <option value="焼肉" th:selected="${genre == '焼肉'}">焼肉</option>
+										       	  <option value="居酒屋" th:selected="${genre == '居酒屋'}">居酒屋</option>
+											      <option value="ピザ" th:selected="${genre == 'ピザ'}">ピザ</option>
+											      <option value="寿司" th:selected="${genre == '寿司'}">寿司</option>
+											      <option value="カレー" th:selected="${genre == 'カレー'}">カレー</option>
+											      <option value="お好み焼き" th:selected="${genre == 'お好み焼き'}">お好み焼き</option>
+											      <option value="バーガー" th:selected="${genre == 'バーガー」'}">バーガー</option>
+											      <option value="パン屋" th:selected="${genre == 'パン屋'}">パン屋</option>
+										    	  <option value="ベーカリー" th:selected="${genre == 'ベーカリー'}">ベーカリー</option>
+											      <option value="バイキング" th:selected="${genre == 'バイキング'}">バイキング</option>
+											      <option value="バー" th:selected="${genre == 'バー'}">バー</option>
+											      <option value="カフェ" th:selected="${genre == 'カフェ'}">カフェ</option>
+											      <option value="デザート" th:selected="${genre == 'デザート'}">デザート</option>
+											      <option value="テイクアウト" th:selected="${genre == 'テイクアウト'}">テイクアウト</option>  
                                              </select>                                                                                
                                          </div>
                                          <div class="form-group">

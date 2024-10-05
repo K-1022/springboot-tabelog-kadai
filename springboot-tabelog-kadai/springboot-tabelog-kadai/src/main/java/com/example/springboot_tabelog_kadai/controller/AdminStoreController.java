@@ -89,7 +89,7 @@ public class AdminStoreController {
 	public String edit(@PathVariable(name = "id") Integer id, Model model) {
 		Store store = storeRepository.getReferenceById(id);
 		String imageName = store.getImageName();
-		StoreEditForm storeEditForm = new StoreEditForm(store.getId(), store.getName(), store.getGenre(), null, store.getDescription(), store.getPrice(), store.getPostalCode(), store.getAddress(), store.getPhoneNumber());
+		StoreEditForm storeEditForm = new StoreEditForm(store.getId(), store.getName(), store.getGenre(), null, store.getDescription(), store.getPrice(), store.getPostalCode(), store.getAddress(), store.getPhoneNumber(), store.getHoliday(), store.getOpenTime(), store.getCloseTime());
 		
 		model.addAttribute("imageName", imageName);
 		model.addAttribute("storeEditForm", storeEditForm);

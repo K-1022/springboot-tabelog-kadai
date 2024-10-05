@@ -34,7 +34,6 @@ public class SignupForm {
     @NotBlank(message = "パスワード（確認用）を入力してください。")
     private String passwordConfirmation;   
     
-    @NotBlank(message = "どちらか選択してください。")
-    private String course;
+
 
 }
