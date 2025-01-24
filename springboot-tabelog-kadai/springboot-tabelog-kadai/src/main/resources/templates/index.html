@@ -1,220 +1,239 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <div th:replace="~{fragment :: meta}"></div>
-
-        <div th:replace="~{fragment :: styles}"></div>
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
-
-        <!-- Swiper -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
-
-        <title>NAGOYAMESHI</title>
+		
+         <div th:replace="~{fragment :: meta}"></div>   
+              
+         <div th:replace="~{fragment :: styles}"></div>
+        
+        <title>SAMURAI Travel</title>	
     </head>
     <body>
-        <div class="nagoyameshi-wrapper">
-            <div th:replace="~{fragment :: header}"></div>
 
-            <main>
-                <div>
-                    <div class="swiper nagoyameshi-swiper">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide"><img th:src="@{/images/main1.jpg}"></div>
-                            <div class="swiper-slide"><img th:src="@{/images/main2.jpg}"></div>
-                            <div class="swiper-slide"><img th:src="@{/images/main3.jpg}"></div>
-                            <div class="d-flex align-items-center nagoyameshi-overlay-background">
-                                <div class="container nagoyameshi-container nagoyameshi-overlay-text">
-                                    <h1 class="text-white nagoyameshi-catchphrase-heading">名古屋ならではの味を、<br>見つけよう</h1>
-                                    <p class="text-white nagoyameshi-catchphrase-paragraph">NAGOYAMESHIは、<br>名古屋市のB級グルメ専門のレビューサイトです。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div th:if="${param.loggedIn}" class="container nagoyameshi-container my-3">
-                    <div class="alert alert-info">
-                        <p class="mb-0">ログインしました。</p>
-                    </div>
-                </div>
-
-                <div th:if="${param.loggedOut}" class="container nagoyameshi-container my-3">
-                    <div class="alert alert-info">
-                        <p class="mb-0">ログアウトしました。</p>
-                    </div>
-                </div>
-
-                <div th:if="${successMessage}" class="container nagoyameshi-container my-3">
-                    <div class="alert alert-info">
-                        <span th:text="${successMessage}"></span>
-                    </div>
-                </div>
-
-                <div th:if="${errorMessage}" class="container nagoyameshi-container my-3">
-                    <div class="alert alert-danger">
-                        <span th:text="${errorMessage}"></span>
-                    </div>
-                </div>
-
-                <div class="bg-light mb-4 py-4">
-                    <div class="container nagoyameshi-container">
-                        <h2 class="mb-3">キーワードから探す</h2>
-                        <form method="get" th:action="@{/restaurants}" class="nagoyameshi-user-search-box">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="店舗名・エリア・カテゴリ" name="keyword">
-                                <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="container nagoyameshi-container">
-                    <h2 class="mb-3">評価が高いお店</h2>
-                    <div class="row row-cols-xl-6 row-cols-md-3 row-cols-2 g-3 mb-5">
-                        <div th:each="highlyRatedRestaurant : ${highlyRatedRestaurants}" class="col">
-                            <a th:href="@{/restaurants/__${highlyRatedRestaurant.id}__}" class="link-dark nagoyameshi-card-link">
-                                <div class="card h-100">
-                                    <img th:unless="${highlyRatedRestaurant.image == null}" th:src="@{/storage/__${highlyRatedRestaurant.image}__}" class="card-img-top nagoyameshi-vertical-card-image" alt="店舗画像">
-                                    <img th:if="${highlyRatedRestaurant.image == null}" th:src="@{/images/no_image.jpg}" class="card-img-top nagoyameshi-vertical-card-image" alt="画像なし">
-
-                                    <div class="card-body">
-                                        <h3 class="card-title" th:text="${highlyRatedRestaurant.name}"></h3>
-                                        <div class="text-muted small mb-1">
-                                            <th:block th:unless="${highlyRatedRestaurant.categoriesRestaurants.isEmpty()}">
-                                                <th:block th:each="categoryRestaurant, stat : ${highlyRatedRestaurant.categoriesRestaurants}">
-                                                    <div class="d-inline-block">
-                                                        <span th:if="${stat.first}" th:text="${categoryRestaurant.category.name}"></span><span th:unless="${stat.first}" th:text="${' ' + categoryRestaurant.category.name}"></span>
-                                                    </div>
-                                                </th:block>
-                                            </th:block>
-                                            <span th:if="${highlyRatedRestaurant.categoriesRestaurants.isEmpty()}">カテゴリ未設定</span>
-                                        </div>
-                                        <p class="card-text">
-                                            <th:block th:with="roundedScore=${T(java.lang.Math).round(highlyRatedRestaurant.getAverageScore() * 2.0)}">
-                                                <span class="nagoyameshi-star-rating me-1" th:data-rate="${#numbers.formatDecimal(roundedScore / 2.0, 1, 'COMMA', 1, 'POINT')}"></span>
-                                            </th:block>
-                                            <span th:text="${#numbers.formatDecimal(highlyRatedRestaurant.getAverageScore(), 1, 'COMMA', 2, 'POINT')}"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <h2 class="mb-3">カテゴリから探す</h2>
-                    <div class="row row-cols-xl-6 row-cols-md-3 row-cols-2 g-3 mb-3">
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${washoku.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/washoku.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="和食">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">和食</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${udon.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/udon.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="うどん">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">うどん</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${don.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/don.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="丼物">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">丼物</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${ramen.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/ramen.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="ラーメン">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">ラーメン</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${oden.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/oden.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="おでん">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">おでん</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <a th:href="@{/restaurants(categoryId = ${fried.id})}" class="nagoyameshi-card-link">
-                                <div class="card text-white">
-                                    <img th:src="@{/images/fried.jpg}" class="card-img nagoyameshi-vertical-card-image" alt="揚げ物">
-                                    <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
-                                        <h3 class="card-title nagoyameshi-category-name">揚げ物</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <th:block th:each="category : ${categories}">
-                            <th:block th:if="${!(category.name == '和食' || category.name == 'うどん' || category.name == '丼物' || category.name == 'ラーメン' || category.name == 'おでん' || category.name == '揚げ物')}">
-                                <a th:href="@{/restaurants(categoryId = ${category.id})}" class="btn btn-outline-secondary btn-sm me-1 mb-2" th:text="${category.name}"></a>
-                            </th:block>
-                        </th:block>
-                    </div>
-
-                    <h2 class="mb-3">新規掲載店</h2>
-                    <div class="row row-cols-xl-6 row-cols-md-3 row-cols-2 g-3 mb-5">
-                        <div th:each="newRestaurant : ${newRestaurants}" class="col">
-                            <a th:href="@{/restaurants/__${newRestaurant.id}__}" class="link-dark nagoyameshi-card-link">
-                                <div class="card h-100">
-                                    <img th:unless="${newRestaurant.image == null}" th:src="@{/storage/__${newRestaurant.image}__}" class="card-img-top nagoyameshi-vertical-card-image" alt="店舗画像">
-                                    <img th:if="${newRestaurant.image == null}" th:src="@{/images/no_image.jpg}" class="card-img-top nagoyameshi-vertical-card-image" alt="画像なし">
-
-                                    <div class="card-body">
-                                        <h3 class="card-title" th:text="${newRestaurant.name}"></h3>
-                                        <div class="text-muted small mb-1">
-                                            <th:block th:unless="${newRestaurant.categoriesRestaurants.isEmpty()}">
-                                                <th:block th:each="categoryRestaurant, stat : ${newRestaurant.categoriesRestaurants}">
-                                                    <div class="d-inline-block">
-                                                        <span th:if="${stat.first}" th:text="${categoryRestaurant.category.name}"></span><span th:unless="${stat.first}" th:text="${' ' + categoryRestaurant.category.name}"></span>
-                                                    </div>
-                                                </th:block>
-                                            </th:block>
-                                            <span th:if="${newRestaurant.categoriesRestaurants.isEmpty()}">カテゴリ未設定</span>
-                                        </div>
-                                        <p class="card-text" th:text="${#strings.abbreviate(newRestaurant.description, 20)}"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            <div th:replace="~{fragment :: footer}"></div>
-        </div>
-
-        <div th:replace="~{fragment :: scripts}"></div>
-
-        <!-- Swiper -->
-        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-        <script th:src="@{/js/carousel.js}"></script>
-    </body>
+         <div class="tabelog-wrapper">
+             <!-- ヘッダー -->
+             <div th:replace="~{fragment :: header}"></div>
+             
+             <main>
+                 <div class="container pt-4 pb-5 tabelog-container">
+                     <div th:if="${param.loggedIn}" class="alert alert-info">
+                         ログインしました。
+                     </div>  
+                     
+                     <div th:if="${param.loggedOut}" class="alert alert-info">
+                         ログアウトしました。
+                     </div>
+                     
+                      <div th:if="${successMessage}" class="alert alert-info">
+                         <span th:text="${successMessage}"></span>
+                     </div> 
+                     
+                     <div class="d-flex justify-content-center">                                            
+                         <form method="get" th:action="@{/stores}" class="mb-5 tabelog-search-form">
+                             <div class="input-group">
+                                 <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="エリア・キーワード">
+                                 <button type="submit" class="btn text-white shadow-sm tabelog-btn">検索</button> 
+                             </div>               
+                         </form>                        
+                     </div>                                                                                                  
+                                                      
+                     <h2 class="text-center mb-3">新着</h2>
+                     <div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">                                        
+                         <div class="col" th:each="newStore : ${newStores}">
+                             <a th:href="@{/stores/__${newStore.getId()}__}" class="link-dark tabelog-card-link">
+                                 <div class="card h-100">                                                                        
+                                     <img th:if="${newStore.getImageName()}" th:src="@{/storage/__${newStore.getImageName()}__}" class="card-img-top tabelog-vertical-card-image" alt="店舗画像">                                     
+                                     <img th:unless="${newStore.getImageName()}" th:src="@{/images/noImage.png}" class="card-img-top tabelog-vertical-card-image" alt="NO IMAGE">                                                                                                                        
+                                     <div class="card-body">                                    
+                                         <h3 class="card-title" th:text="${newStore.getName()}"></h3>
+                                         <p class="card-text mb-1">
+                                             <small class="text-muted" th:text="${newStore.getAddress()}"></small>                                            
+                                         </p>
+                                         <p class="card-text">
+                                             <span th:text="${#numbers.formatInteger(newStore.getPrice(), 1, 'COMMA') + '円 / 泊'}"></span>                                            
+                                         </p>                                    
+                                     </div>
+                                 </div>    
+                             </a>            
+                         </div>                                               
+                     </div>
+                     
+                     <div class="row justify-content-center">
+                         <div class="col-xl-5 col-lg-6 col-md-8">                    
+                     
+                             <h2 class="text-center mb-3">エリアから探す</h2>                                        
+                              
+                             <table class="table">
+                                 <tbody>                                                     
+                                     <tr>
+                                         <th>北海道</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=北海道}">北海道</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>東北</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=青森県}" class="me-2">青森県</a>
+                                             <a th:href="@{/stores?area=岩手県}" class="me-2">岩手県</a>
+                                             <a th:href="@{/stores?area=宮城県}" class="me-2">宮城県</a>
+                                             <a th:href="@{/stores?area=秋田県}" class="me-2">秋田県</a>
+                                             <a th:href="@{/stores?area=山形県}" class="me-2">山形県</a>
+                                             <a th:href="@{/stores?area=福島県}">福島県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>北関東</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=茨城県}" class="me-2">茨城県</a>
+                                             <a th:href="@{/stores?area=栃木県}" class="me-2">栃木県</a>
+                                             <a th:href="@{/stores?area=群馬県}">群馬県</a>                                    
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>首都圏</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=埼玉県}" class="me-2">埼玉県</a>
+                                             <a th:href="@{/stores?area=千葉県}" class="me-2">千葉県</a>
+                                             <a th:href="@{/stores?area=東京都}" class="me-2">東京都</a>
+                                             <a th:href="@{/stores?area=神奈川県}">神奈川県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>甲信越</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=新潟県}" class="me-2">新潟県</a>
+                                             <a th:href="@{/stores?area=山梨県}" class="me-2">山梨県</a>
+                                             <a th:href="@{/stores?area=長野県}">長野県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>北陸</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=富山県}" class="me-2">富山県</a>
+                                             <a th:href="@{/stores?area=石川県}" class="me-2">石川県</a>
+                                             <a th:href="@{/stores?area=福井県}">福井県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>東海</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=岐阜県}" class="me-2">岐阜県</a>
+                                             <a th:href="@{/stores?area=静岡県}" class="me-2">静岡県</a>
+                                             <a th:href="@{/stores?area=愛知県}" class="me-2">愛知県</a>
+                                             <a th:href="@{/stores?area=三重県}">三重県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>近畿</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=滋賀県}" class="me-2">滋賀県</a>
+                                             <a th:href="@{/stores?area=京都府}" class="me-2">京都府</a>
+                                             <a th:href="@{/stores?area=大阪府}" class="me-2">大阪府</a>
+                                             <a th:href="@{/stores?area=兵庫県}" class="me-2">兵庫県</a>
+                                             <a th:href="@{/stores?area=奈良県}" class="me-2">奈良県</a>
+                                             <a th:href="@{/stores?area=和歌山県}">和歌山県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>山陽・山陰</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=鳥取県}" class="me-2">鳥取県</a>
+                                             <a th:href="@{/stores?area=島根県}" class="me-2">島根県</a>
+                                             <a th:href="@{/stores?area=岡山県}" class="me-2">岡山県</a>
+                                             <a th:href="@{/stores?area=広島県}" class="me-2">広島県</a>
+                                             <a th:href="@{/stores?area=山口県}">山口県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>四国</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=徳島県}" class="me-2">徳島県</a>
+                                             <a th:href="@{/stores?area=香川県}" class="me-2">香川県</a>
+                                             <a th:href="@{/stores?area=愛媛県}" class="me-2">愛媛県</a>
+                                             <a th:href="@{/stores?area=高知県}">高知県</a>
+                                         </td>                                     
+                                     </tr>            
+                                     <tr>
+                                         <th>九州</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=福岡県}" class="me-2">福岡県</a>
+                                             <a th:href="@{/stores?area=佐賀県}" class="me-2">佐賀県</a>
+                                             <a th:href="@{/stores?area=長崎県}" class="me-2">長崎県</a>
+                                             <a th:href="@{/stores?area=熊本県}" class="me-2">熊本県</a>
+                                             <a th:href="@{/stores?area=大分県}" class="me-2">大分県</a>
+                                             <a th:href="@{/stores?area=宮崎県}" class="me-2">宮崎県</a>
+                                             <a th:href="@{/stores?area=鹿児島県}">鹿児島県</a>
+                                         </td>                                     
+                                     </tr>  
+                                     <tr>
+                                         <th>沖縄</th>
+                                         <td>
+                                             <a th:href="@{/stores?area=沖縄県}">沖縄県</a>
+                                         </td>                                     
+                                     </tr>                                                                                                                                                                                                                                                                                                                                                                           
+                                 </tbody>
+                             </table>  
+                         </div>
+                         
+                          <div class="col-xl-5 col-lg-6 col-md-8">                    
+                     
+                             <h2 class="text-center mb-3">ジャンルから探す</h2> 
+                              <div class="col" th:each="newGenre : ${newGenre}">
+                             <table class="table">
+                                 <tbody>                                                     
+                                     <tr>
+										 <td>
+											 <a class="me-4" th:text="${newGenre.getGenre}"></a>
+											 <a th:href="@{/stores?genre=和食}" class="me-4">和食</a>
+											 <a th:href="@{/stores?genre=洋食}" class="me-4">洋食</a>
+											 <a th:href="@{/stores?genre=イタリアン}" class="me-4">イタリアン</a>
+											 <a th:href="@{/stores?genre=フレンチ}" class="me-4">フレンチ</a>
+										 </td>
+                                     </tr>
+                                     <tr>
+										 <td>
+											<a th:href="@{/stores?genre=ベトナム料理}" class="me-4">ベトナム料理</a>
+											 <a th:href="@{/stores?genre=中華}" class="me-4">中華</a>
+											 <a th:href="@{/stores?genre=焼肉}" class="me-4">焼肉</a>
+											 <a th:href="@{/stores?genre=居酒屋}" class="me-4">居酒屋</a> 
+										 </td>
+									 </tr>
+									 <tr>
+										 <td>
+											<a th:href="@{/stores?genre=ピザ}" class="me-4">ピザ</a>
+											 <a th:href="@{/stores?genre=寿司}" class="me-4">寿司</a>
+											 <a th:href="@{/stores?genre=カレー}" class="me-4">カレー</a>
+											 <a th:href="@{/stores?genre=お好み焼き}" class="me-4">お好み焼き</a> 
+										 </td>
+									 </tr>
+									 <tr>
+										 <td>
+											<a th:href="@{/stores?genre=バーガー}" class="me-4">バーガー</a>
+											 <a th:href="@{/stores?genre=パン屋}" class="me-4">パン屋</a>
+											 <a th:href="@{/stores?genre=ベーカリー}" class="me-4">ベーカリー</a>
+											 <a th:href="@{/stores?genre=バイキング}" class="me-4">バイキング</a> 
+										 </td>
+									 </tr>
+									 <tr>
+										 <td>
+											<a th:href="@{/stores?genre=バー}" class="me-4">バー</a>
+											 <a th:href="@{/stores?genre=カフェ}" class="me-4">カフェ</a>
+											 <a th:href="@{/stores?genre=デザート}" class="me-4">デザート</a>
+											 <a th:href="@{/stores?genre=テイクアウト}" class="me-4">テイクアウト</a> 
+										 </td>
+									 </tr>
+                                 </tbody>
+                             </table>
+                          </div>                    
+                     </div>  
+                 </div>
+             </main>
+             
+             <!-- フッター -->
+             <div th:replace="~{fragment :: footer}"></div>
+         </div>    
+         
+         <div th:replace="~{fragment :: scripts}"></div>  
+	</body>
 </html>
