@@ -36,6 +36,7 @@ public class UserService {
         user.setPhoneNumber(signupForm.getPhoneNumber());
         user.setEmail(signupForm.getEmail());
         user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
+        user.setCosent(signupForm.getConsent());
         user.setRole(role);
         user.setEnabled(false);        
         

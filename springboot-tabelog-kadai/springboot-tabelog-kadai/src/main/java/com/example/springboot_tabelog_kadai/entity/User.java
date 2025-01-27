@@ -42,6 +42,8 @@ public class User {
     @Column(name = "password")
     private String password;    
 
+    @Column(name = "consent")
+    private String cosent;    
     
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -55,6 +57,8 @@ public class User {
     
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+
+	
 
 	
 }
